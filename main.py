@@ -1,31 +1,33 @@
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 import requests
-from datetime import datetime, timezone
+from datetime import datetime
+import os
 
 app = FastAPI()
 
 @app.get("/me")
 def get_profile():
     try:
-        # Fetch cat fact from external API
+        # Fetch cat fact
         response = requests.get("https://catfact.ninja/fact", timeout=5)
-        response.raise_for_status()  # Raises error if status != 200
-        cat_fact = response.json().get("fact", "Cats are awesome!")
-    except requests.exceptions.RequestException:
-        # Fallback if API fails
-        cat_fact = "Could not fetch a cat fact at the moment."
+        fact = response.json().get("fact", "Cats are amazing creatures!")
+    except Exception:
+        fact = "Could not fetch cat fact right now."
 
-    # Create response data
-    data = {
+    # Return JSON response
+    return {
         "status": "success",
         "user": {
             "email": "ehiomhentreasureruth@gmail.com",
             "name": "Ehiomhen Treasure",
             "stack": "Python/FastAPI"
         },
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "fact": cat_fact
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "fact": fact
     }
 
-    return JSONResponse(content=data, media_type="application/json")
+# 👇 THIS PART IS IMPORTANT FOR RAILWAY
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
