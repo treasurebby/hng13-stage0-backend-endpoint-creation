@@ -26,7 +26,20 @@ def get_profile():
         "fact": fact
     }
 
-# 👇 THIS PART IS IMPORTANT FOR RAILWAY
+# Simple health/info endpoint for root path
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "message": "FastAPI is running. See /docs for API docs.",
+        "endpoints": {
+            "docs": "/docs",
+            "openapi": "/openapi.json",
+            "me": "/me"
+        }
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
