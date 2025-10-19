@@ -20,8 +20,8 @@ def get_profile():
     data = {
         "status": "success",
         "user": {
-            "email": "your_email@example.com",
-            "name": "Your Full Name",
+            "email": "ehiomhentreasureruth@gmail.com",
+            "name": "Ehiomhen Treasure",
             "stack": "Python/FastAPI"
         },
         "timestamp": datetime.now(timezone.utc).isoformat(),
